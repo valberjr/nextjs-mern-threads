@@ -20,7 +20,7 @@ const communitySchema = new mongoose.Schema({
   bio: {
     type: String,
   },
-  createdBY: {
+  createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },

@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 
 import { createThread } from '@/lib/actions/thread.actions';
 import { ThreadValidation } from '@/lib/validations/thread';
+import { useOrganization } from '@clerk/nextjs';
 import { usePathname, useRouter } from 'next/navigation';
 import * as z from 'zod';
 import { Button } from '../ui/button';
@@ -25,6 +26,8 @@ interface Props {
 const PostThread = ({ userId }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
+  const { organization } = useOrganization();
+
   const form = useForm({
     resolver: zodResolver(ThreadValidation),
     defaultValues: {
@@ -37,7 +40,7 @@ const PostThread = ({ userId }: Props) => {
     await createThread({
       text: values.thread,
       author: userId,
-      communityId: null,
+      communityId: organization ? organization.id : null,
       path: pathname,
     });
     router.push('/');
